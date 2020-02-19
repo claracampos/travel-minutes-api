@@ -1,10 +1,16 @@
-const mongodb = require("mongodb");
-const MongoClient = mongodb.MongoClient;
+const mongoose = require("mongoose");
 
 exports.fetchUsers = async () => {
-  const client = await MongoClient.connect(process.env.URI, {
-    useUnifiedTopology: true
+  mongoose.connect(process.env.URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true
   });
-  const users = client.db("travel-minutes").collection("users");
+
+  const User = mongoose.model("User", {
+    name: String
+  });
+
+  const users = User.find();
   return users;
 };
