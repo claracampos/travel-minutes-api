@@ -11,24 +11,6 @@ app.listen(port, console.log(`server is running on port ${port}`));
 
 app.use(express.json());
 
-app.get("/users", async (req, res) => {
-  try {
-    const users = await User.find();
-    res.send(users);
-  } catch (error) {
-    res.send(error);
-  }
-});
-
-app.get("/entries", async (req, res) => {
-  try {
-    const entries = await Entry.find();
-    res.send(entries);
-  } catch (error) {
-    res.send(error);
-  }
-});
-
 app.post("/register", async (req, res) => {
   try {
     const { email, password } = req.body;
