@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-const Entry = mongoose.model("Entry", {
+const entrySchema = new Schema({
   place: { type: String, required: true, maxlength: 50 },
   date: { type: String, required: true, maxlength: 10 },
   done: { type: String, required: true, maxlength: 100 },
@@ -8,4 +9,6 @@ const Entry = mongoose.model("Entry", {
   seen: { type: String, required: true, maxlength: 100 }
 });
 
-module.exports = Entry;
+const Entry = mongoose.model("Entry", entrySchema);
+
+module.exports = { Entry, entrySchema };
