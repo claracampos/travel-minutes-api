@@ -8,10 +8,8 @@ app.listen(port, console.log(`server is running on port ${port}`));
 app.get("/", async (req, res) => {
   try {
     const users = await database.fetchUsers();
-    users
-      .find()
-      .toArray((error, user) => (error ? res.send(error) : res.send(user)));
-  } catch (error) {
-    res.send(error);
+    res.send(users);
+  } catch {
+    res.send("error");
   }
 });
