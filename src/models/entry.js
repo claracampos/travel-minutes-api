@@ -10,6 +10,4 @@ const entrySchema = new Schema({
   label: { type: String, maxlength: 50 }
 });
 
-const Entry = mongoose.model("Entry", entrySchema);
-
-module.exports = { Entry, entrySchema };
+module.exports = { entrySchema };
