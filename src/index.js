@@ -25,10 +25,7 @@ app.get("/all-entries", auth, async (req, res) => {
 app.get("/entry-id", auth, async (req, res) => {
   try {
     const entryId = req.body.entryId;
-    const entry = await req.user.entries.id(entryId);
-    if (!entry) {
-      throw new Error("Entry not found.");
-    }
+    const entry = await req.user.findEntryById(entryId);
     res.status(200).send(entry);
   } catch (error) {
     res.status(500).send({ Error: error.message });
@@ -59,7 +56,8 @@ app.post("/add-entry", auth, async (req, res) => {
 app.delete("/delete-entry", auth, async (req, res) => {
   try {
     const { entryId } = req.body;
-    const entry = await req.user.entries.id(entryId).remove();
+    const entry = await req.user.findEntryById(entryId);
+    await entry.remove();
     await req.user.save();
     res.status(200).send(entry);
   } catch (error) {
