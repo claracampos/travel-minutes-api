@@ -21,6 +21,18 @@ app.use(express.json());
 //Changing password
 
 //Logging in
+app.post("/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const validUser = await User.checkCredentials(email, password);
+
+    res.status(200);
+    res.send(validUser);
+  } catch (error) {
+    res.status(401);
+    res.send({ Error: error.message });
+  }
+});
 
 //Logging out
 
