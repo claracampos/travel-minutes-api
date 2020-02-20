@@ -34,7 +34,7 @@ app.post("/add-entry", auth, async (req, res) => {
     });
     await req.user.entries.push(entry);
     await req.user.save();
-    res.status(201).send(entry._id);
+    res.status(201).send(entry);
   } catch (error) {
     res.status(500).send({ Error: error.message });
   }
