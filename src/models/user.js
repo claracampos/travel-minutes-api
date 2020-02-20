@@ -57,6 +57,15 @@ userSchema.methods.generateAuthToken = async function() {
   return token;
 };
 
+userSchema.methods.findEntryById = async function(entryId) {
+  const user = this;
+  const entry = await user.entries.id(entryId);
+  if (!entry) {
+    throw new Error("Entry not found.");
+  }
+  return entry;
+};
+
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;
