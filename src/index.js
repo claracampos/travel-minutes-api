@@ -41,6 +41,16 @@ app.post("/add-entry", auth, async (req, res) => {
 });
 
 //Deleting entry
+app.delete("/delete-entry", auth, async (req, res) => {
+  try {
+    const { entryId } = req.body;
+    const entry = await req.user.entries.id(entryId).remove();
+    await req.user.save();
+    res.status(200).send(entry);
+  } catch (error) {
+    res.status(500).send({ Error: error.message });
+  }
+});
 
 //Editing entry
 
