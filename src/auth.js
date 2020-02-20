@@ -3,6 +3,9 @@ const User = require("./models/user");
 
 const auth = async (req, res, next) => {
   try {
+    if (!req.header("Authorization")) {
+      throw new Error("Authentication error.");
+    }
     const token = req.header("Authorization").replace("Bearer ", "");
     const id = jwt.verify(token, process.env.SECRET);
     const user = await User.findById(id);
