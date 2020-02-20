@@ -24,8 +24,8 @@ app.get("/all-entries", auth, async (req, res) => {
 //Find entry by Id
 app.get("/entry-id", auth, async (req, res) => {
   try {
-    const id = req.body.id;
-    const entry = await req.user.entries.id(id);
+    const entryId = req.body.entryId;
+    const entry = await req.user.entries.id(entryId);
     if (!entry) {
       throw new Error("Entry not found.");
     }
