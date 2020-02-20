@@ -24,13 +24,14 @@ app.get("/all-entries", auth, async (req, res) => {
 //Adding new entry
 app.post("/add-entry", auth, async (req, res) => {
   try {
-    const { date, place, seen, done, met } = req.body;
+    const { date, place, seen, done, met, label } = req.body;
     const entry = await req.user.entries.create({
       date: date,
       place: place,
       seen: seen,
       done: done,
-      met: met
+      met: met,
+      label: label
     });
     await req.user.entries.push(entry);
     await req.user.save();
