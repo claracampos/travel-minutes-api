@@ -14,6 +14,24 @@ app.use(express.json());
 //Reading entries
 
 //Adding new entry
+app.post("/add-entry", auth, async (req, res) => {
+  try {
+    const { date, place, seen, done, met } = req.body;
+    const entry = await req.user.entries.create({
+      date: date,
+      place: place,
+      seen: seen,
+      done: done,
+      met: met
+    });
+    await req.user.entries.push(entry);
+    await req.user.save();
+    res.status(201).send(entry._id);
+  } catch (error) {
+    res.status(400);
+    res.send({ Error: error.message });
+  }
+});
 
 //Deleting entry
 
