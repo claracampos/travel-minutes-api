@@ -21,6 +21,20 @@ app.get("/all-entries", auth, async (req, res) => {
   }
 });
 
+//Find entry by Id
+app.get("/entry-id", auth, async (req, res) => {
+  try {
+    const id = req.body.id;
+    const entry = await req.user.entries.id(id);
+    if (!entry) {
+      throw new Error("Entry not found.");
+    }
+    res.status(200).send(entry);
+  } catch (error) {
+    res.status(500).send({ Error: error.message });
+  }
+});
+
 //Adding new entry
 app.post("/add-entry", auth, async (req, res) => {
   try {
