@@ -25,9 +25,9 @@ app.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
     const validUser = await User.checkCredentials(email, password);
-
+    const token = await validUser.generateAuthToken();
     res.status(200);
-    res.send(validUser);
+    res.send({ validUser, token: token });
   } catch (error) {
     res.status(401);
     res.send({ Error: error.message });
@@ -45,9 +45,10 @@ app.post("/register", async (req, res) => {
       password: await bcrypt.hash(password, 8)
     };
     await User.doesUserExist(email);
-    await User.create(newUser);
+    const savedUser = await User.create(newUser);
+    const token = await savedUser.generateAuthToken();
     res.status(201);
-    res.send("registered");
+    res.send({ savedUser, token: token });
   } catch (error) {
     res.status(500);
     res.send({ Error: error.message });
