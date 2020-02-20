@@ -22,7 +22,7 @@ const userSchema = new Schema({
     required: true
   },
   entries: [entrySchema],
-  tokens: [{ token: { type: String, required: true } }]
+  tokens: [{ type: String, required: true }]
 });
 
 userSchema.statics.doesUserExist = async function(email) {
@@ -50,8 +50,10 @@ userSchema.statics.checkCredentials = async function(email, password) {
 userSchema.methods.generateAuthToken = async function() {
   const user = this;
   const token = jwt.sign(user._id.toString(), process.env.SECRET);
-  user.tokens = user.tokens.concat({ token: token });
-  user.save();
+  if (!user.tokens.includes(token)) {
+    user.tokens = user.tokens.concat(token);
+    user.save();
+  }
   return token;
 };
 
