@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 const validator = require("validator");
 const { entrySchema } = require("./entry");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const userSchema = new Schema({
   email: {
@@ -20,7 +21,8 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
-  entries: [entrySchema]
+  entries: [entrySchema],
+  tokens: [{ token: { type: String, required: true } }]
 });
 
 userSchema.statics.doesUserExist = async function(email) {
@@ -43,6 +45,14 @@ userSchema.statics.checkCredentials = async function(email, password) {
     throw new Error("The password is incorrect.");
   }
   return existingUser;
+};
+
+userSchema.methods.generateAuthToken = async function() {
+  const user = this;
+  const token = jwt.sign(user._id.toString(), process.env.SECRET);
+  user.tokens = user.tokens.concat({ token: token });
+  user.save();
+  return token;
 };
 
 const User = mongoose.model("User", userSchema);
