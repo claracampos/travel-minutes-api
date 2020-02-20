@@ -11,7 +11,15 @@ app.listen(port, console.log(`server is running on port ${port}`));
 
 app.use(express.json());
 
-//Reading entries
+//Reading all entries
+app.get("/all-entries", auth, async (req, res) => {
+  try {
+    const entries = await req.user.entries;
+    res.status(200).send(entries);
+  } catch (error) {
+    res.status(500).send({ Error: error.message });
+  }
+});
 
 //Adding new entry
 app.post("/add-entry", auth, async (req, res) => {
@@ -28,8 +36,7 @@ app.post("/add-entry", auth, async (req, res) => {
     await req.user.save();
     res.status(201).send(entry._id);
   } catch (error) {
-    res.status(400);
-    res.send({ Error: error.message });
+    res.status(500).send({ Error: error.message });
   }
 });
 
@@ -47,8 +54,7 @@ app.post("/login", async (req, res) => {
     const token = await validUser.generateAuthToken();
     res.status(200).send({ JWT: token });
   } catch (error) {
-    res.status(401);
-    res.send({ Error: error.message });
+    res.status(401).send({ Error: error.message });
   }
 });
 
@@ -59,7 +65,7 @@ app.post("/logout", auth, async (req, res) => {
     await req.user.save();
     res.status(200).send("Logged out");
   } catch (error) {
-    res.send({ Error: error.message });
+    res.status(500).send({ Error: error.message });
   }
 });
 
@@ -76,7 +82,6 @@ app.post("/register", async (req, res) => {
     const token = await savedUser.generateAuthToken();
     res.status(201).send({ JWT: token });
   } catch (error) {
-    res.status(500);
-    res.send({ Error: error.message });
+    res.status(500).send({ Error: error.message });
   }
 });
