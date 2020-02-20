@@ -35,6 +35,15 @@ app.post("/login", async (req, res) => {
 });
 
 //Logging out
+app.post("/logout", auth, async (req, res) => {
+  try {
+    req.user.tokens.splice(req.tokens);
+    await req.user.save();
+    res.status(200).send("Logged out");
+  } catch (error) {
+    res.send({ Error: error.message });
+  }
+});
 
 //Registering a new user
 app.post("/register", async (req, res) => {
