@@ -11,7 +11,7 @@ app.listen(port, console.log(`server is running on port ${port}`));
 
 app.use(express.json());
 
-//Reading all entries
+//Read all entries
 app.get("/all-entries", auth, async (req, res) => {
   try {
     const entries = await req.user.entries;
@@ -32,7 +32,7 @@ app.get("/entry-id", auth, async (req, res) => {
   }
 });
 
-//Adding new entry
+//Add new entry
 app.post("/add-entry", auth, async (req, res) => {
   try {
     const { date, place, seen, done, met, label } = req.body;
@@ -52,7 +52,7 @@ app.post("/add-entry", auth, async (req, res) => {
   }
 });
 
-//Deleting entry
+//Delete entry
 app.delete("/delete-entry", auth, async (req, res) => {
   try {
     const { entryId } = req.body;
@@ -65,7 +65,7 @@ app.delete("/delete-entry", auth, async (req, res) => {
   }
 });
 
-//Editing entry
+//Edit entry
 app.patch("/edit-entry", auth, async (req, res) => {
   try {
     const { entryId, seen, done, met } = req.body;
@@ -80,9 +80,9 @@ app.patch("/edit-entry", auth, async (req, res) => {
   }
 });
 
-//Changing password
+//Change password
 
-//Logging in
+//Log in
 app.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -94,7 +94,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
-//Logging out
+//Log out
 app.post("/logout", auth, async (req, res) => {
   try {
     req.user.tokens.splice(req.tokens);
@@ -105,7 +105,7 @@ app.post("/logout", auth, async (req, res) => {
   }
 });
 
-//Registering a new user
+//Register a new user
 app.post("/register", async (req, res) => {
   try {
     const { email, password } = req.body;
