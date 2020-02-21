@@ -66,6 +66,19 @@ app.delete("/delete-entry", auth, async (req, res) => {
 });
 
 //Editing entry
+app.patch("/edit-entry", auth, async (req, res) => {
+  try {
+    const { entryId, seen, done, met } = req.body;
+    const entry = await req.user.findEntryById(entryId);
+    entry.seen = seen;
+    entry.done = done;
+    entry.met = met;
+    await req.user.save();
+    res.status(200).send(entry);
+  } catch (error) {
+    res.status(500).send({ Error: error.message });
+  }
+});
 
 //Changing password
 
