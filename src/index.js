@@ -1,8 +1,8 @@
 const express = require("express");
 require("./database.js");
-const User = require("./models/user");
+const User = require("./database/user");
 const bcrypt = require("bcryptjs");
-const auth = require("./auth");
+const auth = require("./middleware/auth");
 
 const app = express();
 const port = process.env.PORT;
