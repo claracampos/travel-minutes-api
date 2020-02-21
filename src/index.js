@@ -1,5 +1,5 @@
 const express = require("express");
-require("./database.js");
+require("./database/database.js");
 const User = require("./database/user");
 const bcrypt = require("bcryptjs");
 const auth = require("./middleware/auth");
