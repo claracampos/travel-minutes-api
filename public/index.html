@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <title>Travel Minutes API</title>
+  </head>
+  <body>
+    <div class="px-5">
+      <div class="my-4">
+        <h1 class="display-1">Travel Minutes API</h1>
+        <h2 class="lead">
+          Alternative authentication and data storage for the web app
+          <a href="https://travelminutes.netlify.com/" target="blank"
+            >Travel Minutes</a
+          >.
+        </h2>
+      </div>
+      <div class="mb-4">
+        <h3 class="display-4">Public Endpoints*:</h3>
+        <p>
+          *Public endpoints do not require an Authorization header with the
+          request.
+        </p>
+        <h4>POST, "/register"</h4>
+        <ul>
+          <li>Purpose: Register a new user.</li>
+          <li>Request body: {email: String, password: String}</li>
+          <li>Password must contain 7 to 12 characters.</li>
+          <li>Successful response: JSON Web Token</li>
+        </ul>
+        <h4>POST, "/login"</h4>
+        <ul>
+          <li>Purpose: User login.</li>
+          <li>
+            Request body: {email: String, password: String}
+          </li>
+          <li>Password must contain 7 to 12 characters.</li>
+          <li>Successful response: JSON Web Token</li>
+        </ul>
+      </div>
+      <div class="mb-4">
+        <h3 class="display-4">Private Endpoints*:</h3>
+        <p>
+          *Private endpoints require an Authorization header of type Bearer with
+          a valid JSON Web Token.
+        </p>
+        <h4>POST, "/logout"</h4>
+        <ul>
+          <li>Purpose: User logout.</li>
+          <li>
+            Must include Authorization header.
+          </li>
+          <li>Successful response: "Logged out".</li>
+        </ul>
+        <h4>PATCH, "/change-password"</h4>
+        <ul>
+          <li>Purpose: Change a user's password.</li>
+          <li>Request body: {oldPassword: String, newPassword: String}</li>
+          <li>Password must contain 7 to 12 characters.</li>
+          <li>
+            Must include Authorization header.
+          </li>
+          <li>Successful response: "Password changed".</li>
+        </ul>
+        <h4>GET, "/all-entries"</h4>
+        <ul>
+          <li>Purpose: Fetch all entries of a given user.</li>
+          <li>
+            Must include Authorization header.
+          </li>
+          <li>Successful response: Array of entry objects.</li>
+        </ul>
+        <h4>GET, "/entry-id"</h4>
+        <ul>
+          <li>Purpose: Fetch a single entry by its id.</li>
+          <li>
+            Request body: {entryId: String}
+          </li>
+          <li>
+            Must include Authorization header.
+          </li>
+          <li>Successful response: Entry object.</li>
+        </ul>
+        <h4>POST, "/add-entry"</h4>
+        <ul>
+          <li>Purpose: Add an entry.</li>
+          <li>
+            Request body: {date: String, place: String , seen: String, done:
+            String, met: String, (OPTIONAL) label: String}
+          </li>
+          <li>
+            Max length: date = 10 characters; place, label = 50 characters each;
+            seen, done, met = 100 characters each.
+          </li>
+          <li>
+            Must include Authorization header.
+          </li>
+          <li>Successful response: Entry object.</li>
+        </ul>
+        <h4>DELETE, "/delete-entry"</h4>
+        <ul>
+          <li>Purpose: Delete an entry</li>
+          <li>
+            Request body: {entryId: String}
+          </li>
+          <li>
+            Must include Authorization header.
+          </li>
+          <li>Successful response: Entry object.</li>
+        </ul>
+        <h4>PATCH, "/edit-entry"</h4>
+        <ul>
+          <li>Purpose: Update an entry.</li>
+          <li>
+            Request body: {entryId: String, seen: String, done: String, met:
+            String }
+          </li>
+          <li>Max length: seen, done, met = 100 characters each.</li>
+          <li>
+            Must include Authorization header.
+          </li>
+          <li>Successful response: Entry object.</li>
+        </ul>
+      </div>
+    </div>
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
