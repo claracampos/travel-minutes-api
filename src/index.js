@@ -80,8 +80,6 @@ app.patch("/edit-entry", auth, async (req, res) => {
   }
 });
 
-//Change password
-
 //Log in
 app.post("/login", async (req, res) => {
   try {
@@ -117,6 +115,26 @@ app.post("/register", async (req, res) => {
     const savedUser = await User.create(newUser);
     const token = await savedUser.generateAuthToken();
     res.status(201).send({ JWT: token });
+  } catch (error) {
+    res.status(500).send({ Error: error.message });
+  }
+});
+
+//Change password
+app.patch("/change-password", auth, async (req, res) => {
+  try {
+    const { oldPassword, newPassword } = req.body;
+    const doesPasswordMatch = await bcrypt.compare(
+      oldPassword,
+      req.user.password
+    );
+    if (!doesPasswordMatch) {
+      throw new Error("The password is incorrect.");
+    }
+    const hashedPassword = await bcrypt.hash(newPassword, 8);
+    req.user.password = hashedPassword;
+    await req.user.save();
+    res.status(200).send("Password changed.");
   } catch (error) {
     res.status(500).send({ Error: error.message });
   }
