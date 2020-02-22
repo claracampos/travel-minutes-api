@@ -109,7 +109,7 @@ app.post("/register", async (req, res) => {
   try {
     const { email, password } = req.body;
     if (password.length < 7 || password.length > 12) {
-      throw new Error("Password must be between 7 and 12 characters.");
+      throw new Error("Password must contain 7 to 12 characters");
     }
     await User.doesUserExist(email);
     const newUser = {
@@ -136,12 +136,12 @@ app.patch("/change-password", auth, async (req, res) => {
       throw new Error("The password is incorrect.");
     }
     if (newPassword.length < 7 || newPassword.length > 12) {
-      throw new Error("Password must be between 7 and 12 characters.");
+      throw new Error("Password must contain 7 to 12 characters.");
     }
     const hashedPassword = await bcrypt.hash(newPassword, 8);
     req.user.password = hashedPassword;
     await req.user.save();
-    res.status(200).send("Password changed.");
+    res.status(200).send("Password changed");
   } catch (error) {
     res.status(500).send({ Error: error.message });
   }
