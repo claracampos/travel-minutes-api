@@ -10,6 +10,7 @@ const port = process.env.PORT;
 app.listen(port, console.log(`server is running on port ${port}`));
 
 app.use(express.json());
+app.use(express.static("public"));
 
 //Read all entries
 app.get("/all-entries", auth, async (req, res) => {
@@ -107,6 +108,9 @@ app.post("/logout", auth, async (req, res) => {
 app.post("/register", async (req, res) => {
   try {
     const { email, password } = req.body;
+    if (password.length < 7 || password.length > 12) {
+      throw new Error("Password must be between 7 and 12 characters.");
+    }
     await User.doesUserExist(email);
     const newUser = {
       email: email,
@@ -130,6 +134,9 @@ app.patch("/change-password", auth, async (req, res) => {
     );
     if (!doesPasswordMatch) {
       throw new Error("The password is incorrect.");
+    }
+    if (newPassword.length < 7 || newPassword.length > 12) {
+      throw new Error("Password must be between 7 and 12 characters.");
     }
     const hashedPassword = await bcrypt.hash(newPassword, 8);
     req.user.password = hashedPassword;
