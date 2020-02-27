@@ -29,7 +29,7 @@
         <h3>POST, "/register"</h3>
         <ul>
           <li>Purpose: Register a new user.</li>
-          <li>Request body: {email: String, password: String}</li>
+          <li>Request body: { email: String, password: String }</li>
           <li>Password must contain 7 to 12 characters.</li>
           <li>Successful response: JSON Web Token</li>
         </ul>
@@ -37,7 +37,7 @@
         <ul>
           <li>Purpose: User login.</li>
           <li>
-            Request body: {email: String, password: String}
+            Request body: { email: String, password: String }
           </li>
           <li>Password must contain 7 to 12 characters.</li>
           <li>Successful response: JSON Web Token</li>
@@ -50,17 +50,17 @@
           </li>
           <li>Successful response: "Logged out".</li>
         </ul>
-        <h3>PATCH, "/change-password"</h3>
+        <h3>PATCH, "/password"</h3>
         <ul>
           <li>Purpose: Change a user's password.</li>
-          <li>Request body: {oldPassword: String, newPassword: String}</li>
+          <li>Request body: { oldPassword: String, newPassword: String }</li>
           <li>Password must contain 7 to 12 characters.</li>
           <li>
             Must include Authorization header.*
           </li>
           <li>Successful response: "Password changed".</li>
         </ul>
-        <h3>GET, "/all-entries"</h3>
+        <h3>GET, "/entries"</h3>
         <ul>
           <li>Purpose: Fetch all entries of a given user.</li>
           <li>
@@ -68,23 +68,21 @@
           </li>
           <li>Successful response: Array of entry objects.</li>
         </ul>
-        <h3>GET, "/entry-id"</h3>
+        <h3>GET, "/entries/:id"</h3>
         <ul>
           <li>Purpose: Fetch a single entry by its id.</li>
-          <li>
-            Request body: {entryId: String}
-          </li>
+          <li>The entry id must be entered as the URL parameter.</li>
           <li>
             Must include Authorization header.*
           </li>
           <li>Successful response: Entry object.</li>
         </ul>
-        <h3>POST, "/add-entry"</h3>
+        <h3>POST, "/entries"</h3>
         <ul>
           <li>Purpose: Add an entry.</li>
           <li>
-            Request body: {date: String, place: String , seen: String, done:
-            String, met: String, (OPTIONAL) label: String}
+            Request body: { date: String, place: String , seen: String, done:
+            String, met: String, (OPTIONAL) label: String }
           </li>
           <li>
             Max length: date = 10 characters; place, label = 50 characters each;
@@ -95,23 +93,21 @@
           </li>
           <li>Successful response: Entry object.</li>
         </ul>
-        <h3>DELETE, "/delete-entry"</h3>
+        <h3>DELETE, "/entries/:id"</h3>
         <ul>
           <li>Purpose: Delete an entry</li>
-          <li>
-            Request body: {entryId: String}
-          </li>
+          <li>The entry id must be entered as the URL parameter.</li>
           <li>
             Must include Authorization header.*
           </li>
           <li>Successful response: Entry object.</li>
         </ul>
-        <h3>PATCH, "/edit-entry"</h3>
+        <h3>PATCH, "/entries/:id"</h3>
         <ul>
           <li>Purpose: Update an entry.</li>
+          <li>The entry id must be entered as the URL parameter.</li>
           <li>
-            Request body: {entryId: String, seen: String, done: String, met:
-            String }
+            Request body: { seen: String, done: String, met: String }
           </li>
           <li>Max length: seen, done, met = 100 characters each.</li>
           <li>
