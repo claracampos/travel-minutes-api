@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(express.static("public"));
 
 //Read all entries
-app.get("/all-entries", auth, async (req, res) => {
+app.get("/entries", auth, async (req, res) => {
   try {
     const entries = await req.user.entries;
     res.status(200).send(entries);
@@ -23,9 +23,9 @@ app.get("/all-entries", auth, async (req, res) => {
 });
 
 //Find entry by Id
-app.get("/entry-id", auth, async (req, res) => {
+app.get("/entries/:id", auth, async (req, res) => {
   try {
-    const entryId = req.body.entryId;
+    const entryId = req.params.id;
     const entry = await req.user.findEntryById(entryId);
     res.status(200).send(entry);
   } catch (error) {
@@ -34,16 +34,16 @@ app.get("/entry-id", auth, async (req, res) => {
 });
 
 //Add new entry
-app.post("/add-entry", auth, async (req, res) => {
+app.post("/entries", auth, async (req, res) => {
   try {
     const { date, place, seen, done, met, label } = req.body;
     const entry = await req.user.entries.create({
-      date: date,
-      place: place,
-      seen: seen,
-      done: done,
-      met: met,
-      label: label
+      date,
+      place,
+      seen,
+      done,
+      met,
+      label
     });
     await req.user.entries.push(entry);
     await req.user.save();
@@ -54,9 +54,9 @@ app.post("/add-entry", auth, async (req, res) => {
 });
 
 //Delete entry
-app.delete("/delete-entry", auth, async (req, res) => {
+app.delete("/entries/:id", auth, async (req, res) => {
   try {
-    const { entryId } = req.body;
+    const entryId = req.params.id;
     const entry = await req.user.findEntryById(entryId);
     await entry.remove();
     await req.user.save();
@@ -67,9 +67,10 @@ app.delete("/delete-entry", auth, async (req, res) => {
 });
 
 //Edit entry
-app.patch("/edit-entry", auth, async (req, res) => {
+app.patch("/entries/:id", auth, async (req, res) => {
   try {
-    const { entryId, seen, done, met } = req.body;
+    const entryId = req.params.id;
+    const { seen, done, met } = req.body;
     const entry = await req.user.findEntryById(entryId);
     entry.seen = seen;
     entry.done = done;
@@ -125,7 +126,7 @@ app.post("/register", async (req, res) => {
 });
 
 //Change password
-app.patch("/change-password", auth, async (req, res) => {
+app.patch("/password", auth, async (req, res) => {
   try {
     const { oldPassword, newPassword } = req.body;
     const doesPasswordMatch = await bcrypt.compare(
