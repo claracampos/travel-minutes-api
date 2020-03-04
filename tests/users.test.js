@@ -96,6 +96,29 @@ test("Password change", async () => {
     .expect(200);
 });
 
+test("Failed password change (wrong password)", async () => {
+  await request(app)
+    .patch("/password")
+    .send({ oldPassword: "incorrect", newPassword: "test1234" })
+    .set(testUserAuth)
+    .expect(500);
+});
+
+test("Failed password change (new password is too short)", async () => {
+  await request(app)
+    .patch("/password")
+    .send({ oldPassword: testUser.password, newPassword: "test" })
+    .set(testUserAuth)
+    .expect(500);
+});
+
+test("Failed password change (no auth)", async () => {
+  await request(app)
+    .patch("/password")
+    .send({ oldPassword: testUser.password, newPassword: "test1234" })
+    .expect(401);
+});
+
 test("Log out user", async () => {
   await request(app)
     .post("/logout")
