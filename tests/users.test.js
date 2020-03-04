@@ -78,3 +78,16 @@ test("Failed login (invalid user)", async () => {
     .send({ email: "invalid@gmail.com", password: "password" })
     .expect(401);
 });
+
+test("Log out user", async () => {
+  await request(app)
+    .post("/logout")
+    .set({ Authorization: testUser.tokens[0] })
+    .expect(200);
+});
+
+test("Failed logout (no auth header)", async () => {
+  await request(app)
+    .post("/logout")
+    .expect(401);
+});
