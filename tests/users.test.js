@@ -3,15 +3,18 @@ const app = require("../src/app");
 const User = require("../src/database/user");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 
 const testUserId = new mongoose.Types.ObjectId();
+
 const testUser = {
   _id: testUserId,
   email: "test@gmail.com",
   password: "testing123",
-  entries: [],
   tokens: [jwt.sign(testUserId.toString(), process.env.SECRET)]
 };
+
+const testUserAuth = { Authorization: testUser.tokens[0] };
 
 const newUser = {
   email: "newuser@gmail.com",
@@ -20,7 +23,13 @@ const newUser = {
 
 beforeAll(async () => {
   await User.deleteMany();
-  await User.create(testUser);
+  await User.create({
+    _id: testUser._id,
+    email: testUser.email,
+    password: await bcrypt.hash(testUser.password, 8),
+    entries: [],
+    tokens: testUser.tokens
+  });
 });
 
 test("Register a new user", async () => {
@@ -79,10 +88,18 @@ test("Failed login (invalid user)", async () => {
     .expect(401);
 });
 
+test("Password change", async () => {
+  await request(app)
+    .patch("/password")
+    .send({ oldPassword: testUser.password, newPassword: "test1234" })
+    .set(testUserAuth)
+    .expect(200);
+});
+
 test("Log out user", async () => {
   await request(app)
     .post("/logout")
-    .set({ Authorization: testUser.tokens[0] })
+    .set(testUserAuth)
     .expect(200);
 });
 
