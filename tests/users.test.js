@@ -57,3 +57,24 @@ test("Fail to register with an invalid password (too long)", async () => {
     .send({ email: newUser.email, password: "verylongpassword" })
     .expect(500);
 });
+
+test("Log in user", async () => {
+  await request(app)
+    .post("/login")
+    .send({ email: newUser.email, password: newUser.password })
+    .expect(200);
+});
+
+test("Failed login (wrong password)", async () => {
+  await request(app)
+    .post("/login")
+    .send({ email: newUser.email, password: "password" })
+    .expect(401);
+});
+
+test("Failed login (invalid user)", async () => {
+  await request(app)
+    .post("/login")
+    .send({ email: "invalid@gmail.com", password: "password" })
+    .expect(401);
+});
