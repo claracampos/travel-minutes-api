@@ -31,3 +31,24 @@ test("Fail to register an existing user", async () => {
     .send({ email: testUser.email, password: testUser.password })
     .expect(500);
 });
+
+test("Fail to register with an invalid email", async () => {
+  await request(app)
+    .post("/register")
+    .send({ email: "test", password: testUser.password })
+    .expect(500);
+});
+
+test("Fail to register with an invalid password (too short)", async () => {
+  await request(app)
+    .post("/register")
+    .send({ email: testUser.email, password: "123" })
+    .expect(500);
+});
+
+test("Fail to register with an invalid password (too long)", async () => {
+  await request(app)
+    .post("/register")
+    .send({ email: testUser.email, password: "verylongpassword" })
+    .expect(500);
+});
