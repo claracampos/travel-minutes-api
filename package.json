@@ -8,7 +8,7 @@
     "dev": "env-cmd -f dev.env nodemon src/index.js",
     "test": "env-cmd -f test.env jest --watch"
   },
-  "jest:": {
+  "jest": {
     "testEnvironment": "node"
   },
   "keywords": [],
